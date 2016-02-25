@@ -2,9 +2,7 @@ import sublime, sublime_plugin, re
 
 class NavBlockCommand(sublime_plugin.TextCommand):
 
-	def run(self, edit, **cfg):
-		regex = re.compile(r'[^\n]*[{}][^\n]*')
-
+	def run(self, edit, **args):
 		sels = self.view.sel()
 		if not sels :
 			return
@@ -12,7 +10,7 @@ class NavBlockCommand(sublime_plugin.TextCommand):
 		cursor = sels[0].begin()
 
 		search_lines = None
-		if cfg['dir'] == 'up' :
+		if args['dir'] == 'up' :
 			search_region = sublime.Region(0, cursor)
 			search_lines = self.view.lines(search_region)
 			search_lines.reverse()
@@ -24,7 +22,12 @@ class NavBlockCommand(sublime_plugin.TextCommand):
 
 		for search_line in search_lines :
 			line = self.view.substr(search_line)
-			if regex.match(line) :
+
+			if "//" in line :
+				continue
+
+			if (('{' in line and not '}' in line)
+			   or ('}' in line and not '{' in line)) :
 				target_line = search_line
 				break
 

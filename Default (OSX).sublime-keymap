@@ -1,0 +1,4 @@
+[
+	{"keys" : [ "alt+down"],"command" : "nav_block","args" : {"dir" : "down"}},
+	{"keys" : [ "alt+up"],"command" : "nav_block","args" : {"dir" : "up"}}
+]
